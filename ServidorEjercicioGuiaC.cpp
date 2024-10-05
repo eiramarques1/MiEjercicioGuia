@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 			if (codigo !=0)
 			{
 				p = strtok( NULL, "/");
-
+				
 				strcpy (nombre, p);
 				// Ya tenemos el nombre
 				printf ("Codigo: %d, Nombre: %s\n", codigo, nombre);
@@ -83,52 +83,52 @@ int main(int argc, char *argv[])
 				strcpy (respuesta,"SI");
 				else
 					strcpy (respuesta,"NO");
-			else if (codigo == 4)
-			{
-				//quieren saber si el nombre es palidromo
-				int palindromo = 1;
-				int len = strlen(nombre);
-				//todo el nombre a minusculas
-				for (i = 0; i < len; i++)
-					nombre[i] = tolower(nombre[i]);
-				for (int i = 0; i < len/2; i++)
+				else if (codigo == 4)
 				{
-					if (nombre[i] != nombre[strlen(nombre) -i -1])
+					//quieren saber si el nombre es palidromo
+					int palindromo = 1;
+					int len = strlen(nombre);
+					//todo el nombre a minusculas
+					for (i = 0; i < len; i++)
+						nombre[i] = tolower(nombre[i]);
+					for (int i = 0; i < len/2; i++)
 					{
-						palindromo = 0;
-						break;
+						if (nombre[i] != nombre[strlen(nombre) -i -1])
+						{
+							palindromo = 0;
+							break;
+						}
 					}
+					if (palindromo)
+						strcpy(respuesta, "SI");
+					else 
+						strcpy(respuesta, "NO");
 				}
-				if (palindromo)
-					strcpy(respuesta, "SI");
-				else 
-					strcpy(respuesta, "NO");
-			}
-			else if (codigo == 5)
-			{
-				//quieren saber su nombre en mayusculas
-				int len = strlen(nombre);
-				for (i = 0; i < len; i++)
-					nombre[i] = toupper(nombre[i]); //convierte a mayusculas
-				strcpy(respuesta, nombre);
-			}
-			else //quiere saber si es alto
-			{
-				p = strtok( NULL, "/");
-				float altura =  atof (p);
-				if (altura > 1.70)
-					sprintf (respuesta, "%s: eres alto",nombre);
-				else
-					sprintf (respuesta, "%s: eresbajo",nombre);
-			}
+				else if (codigo == 5)
+				{
+					//quieren saber su nombre en mayusculas
+					int len = strlen(nombre);
+					for (i = 0; i < len; i++)
+						nombre[i] = toupper(nombre[i]); //convierte a mayusculas
+					strcpy(respuesta, nombre);
+				}
+				else //quiere saber si es alto
+				{
+					p = strtok( NULL, "/");
+					float altura =  atof (p);
+					if (altura > 1.70)
+						sprintf (respuesta, "%s: eres alto",nombre);
+					else
+						sprintf (respuesta, "%s: eresbajo",nombre);
+				}
 				
-			if (codigo !=0)
-			{
-				
-				printf ("Respuesta: %s\n", respuesta);
-				// Enviamos respuesta
-				write (sock_conn,respuesta, strlen(respuesta));
-			}
+				if (codigo !=0)
+				{
+					
+					printf ("Respuesta: %s\n", respuesta);
+					// Enviamos respuesta
+					write (sock_conn,respuesta, strlen(respuesta));
+				}
 		}
 		// Se acabo el servicio para este cliente
 		close(sock_conn); 
