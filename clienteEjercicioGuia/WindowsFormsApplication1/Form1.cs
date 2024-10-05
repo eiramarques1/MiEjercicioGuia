@@ -29,8 +29,8 @@ namespace WindowsFormsApplication1
         {
             //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
             //al que deseamos conectarnos
-            IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9050);
+            IPAddress direc = IPAddress.Parse("192.168.56.101");
+            IPEndPoint ipep = new IPEndPoint(direc, 9000);
             
 
             //Creamos el socket 
@@ -84,6 +84,38 @@ namespace WindowsFormsApplication1
                 else
                     MessageBox.Show("Tu nombre NO bonito. Lo siento.");
 
+            }
+            else if (Palindromo.Checked)
+            {
+                string mensaje = "4/" + nombre.Text;
+                //Enviamos al servidor el nombre tecleado
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+                //Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                if (mensaje == "SI")
+                    MessageBox.Show("Tu nombre es palindromo");
+                else
+                    MessageBox.Show("Tu nobre no es palindormo.");
+            }
+
+            else if (Mayusculas.Checked)
+            {
+                string mensaje = "5/" + nombre.Text;
+                //Enviamos al servidor el nombre tecleado
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+                //Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                MessageBox.Show("Tu nombre en mayusculas es: " + mensaje);
             }
             else
             {

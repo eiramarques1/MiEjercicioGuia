@@ -5,8 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdio.h>
-
-
+#include <ctype.h> //para mayusculas y minusculas
 
 int main(int argc, char *argv[])
 {
@@ -56,9 +55,7 @@ int main(int argc, char *argv[])
 			
 			// Tenemos que a?adirle la marca de fin de string 
 			// para que no escriba lo que hay despues en el buffer
-			peticion[ret]='\0';
-			
-			
+			peticion[ret]='\0';			
 			printf ("Peticion: %s\n",peticion);
 			
 			// vamos a ver que quieren
@@ -86,6 +83,35 @@ int main(int argc, char *argv[])
 				strcpy (respuesta,"SI");
 				else
 					strcpy (respuesta,"NO");
+			else if (codigo == 4)
+			{
+				//quieren saber si el nombre es palidromo
+				int palindromo = 1;
+				int len = strlen(nombre);
+				//todo el nombre a minusculas
+				for (i = 0; i < len; i++)
+					nombre[i] = tolower(nombre[i]);
+				for (int i = 0; i < len/2; i++)
+				{
+					if (nombre[i] != nombre[strlen(nombre) -i -1])
+					{
+						palindromo = 0;
+						break;
+					}
+				}
+				if (palindromo)
+					strcpy(respuesta, "SI");
+				else 
+					strcpy(respuesta, "NO");
+			}
+			else if (codigo == 5)
+			{
+				//quieren saber su nombre en mayusculas
+				int len = strlen(nombre);
+				for (i = 0; i < len; i++)
+					nombre[i] = toupper(nombre[i]); //convierte a mayusculas
+				strcpy(respuesta, nombre);
+			}
 			else //quiere saber si es alto
 			{
 				p = strtok( NULL, "/");
